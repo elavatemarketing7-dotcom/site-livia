@@ -324,7 +324,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* 3. RESULTADOS */}
+      {/* 3. RESULTADOS REAIS */}
       <section className="py-16 md:py-24 px-4 md:px-12 bg-stone-900/10">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 md:mb-16">
@@ -371,7 +371,32 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* 5. CTA FINAL */}
+      {/* 5. A HARMONIZAÇÃO DE ❤️ (BASTIDORES) */}
+      <section className="py-16 md:py-24 px-4 md:px-12 bg-stone-900/30">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="gold-text uppercase tracking-[0.3em] text-[10px] font-black mb-2">Nos Bastidores</p>
+            <h2 className="font-serif text-3xl md:text-4xl mb-3">A Harmonização de ❤️</h2>
+            <p className="text-stone-400 font-light text-sm italic max-w-md mx-auto leading-relaxed">
+              Momentos de cuidado, carinho e a excelência que entregamos a cada paciente.
+            </p>
+          </div>
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 md:gap-3">
+            {IMAGES.heart.map((img, i) => (
+              <div 
+                key={i} 
+                onClick={() => setZoom(img)} 
+                className="aspect-square rounded-xl overflow-hidden cursor-pointer grayscale hover:grayscale-0 transition-all duration-700 relative group shadow-xl"
+              >
+                <img src={img} alt={`Bastidores ${i+1}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+                <div className="absolute inset-0 bg-[#d4af37]/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 6. CTA FINAL */}
       <section className="py-24 md:py-32 px-6 md:px-12 relative overflow-hidden text-center">
         <div className="absolute inset-0 z-0">
           <img src={IMAGES.hero[4]} className="w-full h-full object-cover opacity-20" />
@@ -400,6 +425,7 @@ const LandingPage = () => {
             <div className="flex items-center gap-2 text-stone-500 text-sm"><MapPin size={14} className="text-[#d4af37]"/> {EXPERT_INFO.locations}</div>
             <a href={EXPERT_INFO.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-stone-500 text-sm hover:text-[#d4af37] transition-colors"><Instagram size={14}/> @draliviafaria</a>
           </div>
+          <div className="font-signature text-3xl md:text-4xl gold-text mb-8 opacity-40">Lívia Faria</div>
           <p className="text-stone-800 text-[9px] md:text-[10px] uppercase tracking-[0.2em]">&copy; {new Date().getFullYear()} - Todos os direitos reservados</p>
         </div>
       </footer>
