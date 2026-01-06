@@ -11,11 +11,14 @@ export enum AppState { WELCOME, QUIZ, ANALYZING, RESULTS, LANDING }
 interface QuizAnswer { question: string; answer: string; }
 
 // --- CONSTANTS ---
+const INSTAGRAM_PROMPT = encodeURIComponent("Olá Dra. Lívia! Vi seu trabalho no Instagram e gostaria de saber mais sobre a harmonização facial e agendar uma avaliação.");
+
 const EXPERT_INFO = {
   name: 'Lívia Faria',
   profession: 'Harmonização Facial',
   locations: 'Pará de Minas / Itaúna / São Gonçalo',
-  whatsappUrl: 'https://wa.me/5537998704506',
+  whatsappBaseUrl: 'https://wa.me/5537998704506',
+  whatsappDirectUrl: `https://wa.me/5537998704506?text=${INSTAGRAM_PROMPT}`,
   instagram: 'https://www.instagram.com/draliviafaria/',
 };
 
@@ -72,13 +75,24 @@ const Welcome = ({ onStart, onSkip }: any) => (
     </div>
     <div className="relative z-10 w-full max-w-md">
       <h1 className="font-serif text-5xl md:text-7xl mb-2 gold-text drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)]">Dra. {EXPERT_INFO.name}</h1>
-      <p className="text-white tracking-[0.3em] uppercase text-sm mb-12 font-bold drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)]">Harmonização Facial</p>
-      <div className="space-y-4">
-        <button onClick={onStart} className="w-full gold-gradient text-black font-extrabold py-5 rounded-2xl flex items-center justify-center gap-3 premium-shadow active:scale-95 transition-transform text-base md:text-lg">
-          <ClipboardList className="w-6 h-6" /> INICIAR AVALIAÇÃO PERSONALIZADA
+      <p className="text-white tracking-[0.3em] uppercase text-[10px] md:text-xs mb-10 md:mb-12 font-bold drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)] opacity-90">Harmonização Facial Premium</p>
+      
+      <div className="space-y-3 md:space-y-4">
+        <button onClick={onStart} className="w-full gold-gradient text-black font-black py-4 md:py-5 rounded-2xl flex items-center justify-center gap-3 premium-shadow active:scale-95 transition-transform text-sm md:text-base">
+          <ClipboardList className="w-5 h-5 md:w-6 md:h-6" /> INICIAR AVALIAÇÃO PERSONALIZADA
         </button>
-        <button onClick={onSkip} className="w-full text-white py-3 flex items-center justify-center gap-2 hover:text-white transition-colors bg-black/40 rounded-xl backdrop-blur-md border border-white/20 font-bold shadow-lg">
-          Acessar site direto <ChevronRight size={16} />
+        
+        <a 
+          href={EXPERT_INFO.whatsappDirectUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-4 md:py-5 rounded-2xl flex items-center justify-center gap-3 backdrop-blur-md border border-white/20 active:scale-95 transition-all text-sm md:text-base shadow-xl"
+        >
+          <MessageCircle className="w-5 h-5 md:w-6 md:h-6 text-green-400" /> FALAR COM A DRA. AGORA
+        </a>
+
+        <button onClick={onSkip} className="w-full text-stone-400 py-2 flex items-center justify-center gap-2 hover:text-white transition-colors text-[11px] md:text-xs font-medium uppercase tracking-widest">
+          Acessar site direto <ChevronRight size={14} />
         </button>
       </div>
     </div>
@@ -133,7 +147,6 @@ const Quiz = ({ onComplete, onCancel }: any) => {
           ))}
         </div>
         
-        {/* RODAPÉ DO QUIZ COM TODAS AS OPÇÕES REUNIDAS */}
         <div className="flex justify-between items-center text-[10px] md:text-xs">
           <button 
             onClick={() => step > 0 && setStep(step - 1)} 
@@ -143,7 +156,7 @@ const Quiz = ({ onComplete, onCancel }: any) => {
           </button>
 
           <a 
-            href={EXPERT_INFO.whatsappUrl} 
+            href={EXPERT_INFO.whatsappDirectUrl} 
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-green-500 font-bold hover:text-green-400 transition-colors py-2 border-x border-stone-800 px-4"
@@ -218,7 +231,7 @@ const Results = ({ answers, onNext }: any) => {
     return encodeURIComponent(m);
   };
 
-  const whatsappLink = `${EXPERT_INFO.whatsappUrl}?text=${formatMsg()}`;
+  const whatsappLink = `${EXPERT_INFO.whatsappBaseUrl}?text=${formatMsg()}`;
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4">
@@ -247,7 +260,7 @@ const LandingPage = () => {
 
   return (
     <div className="bg-[#0a0a0a] selection:bg-[#d4af37] selection:text-black scroll-smooth">
-      {/* 1. HERO - COMPACTO E RESPONSIVO */}
+      {/* 1. HERO */}
       <section className="relative h-screen flex flex-col justify-end p-6 md:p-12 overflow-hidden bg-stone-900">
         <div className="absolute inset-0 z-0">
           <img 
@@ -266,7 +279,7 @@ const LandingPage = () => {
             <p className="text-white text-base md:text-xl mb-8 leading-relaxed max-w-md font-medium drop-shadow-[0_2px_15px_rgba(0,0,0,1)] opacity-90">Realçando sua beleza natural através de uma harmonização exclusiva e segura.</p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a 
-                href={EXPERT_INFO.whatsappUrl} 
+                href={EXPERT_INFO.whatsappDirectUrl} 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-3 bg-white text-black font-extrabold py-4 md:py-5 px-8 md:px-10 rounded-full premium-shadow active:scale-95 transition-all hover:bg-stone-100 shadow-2xl text-sm md:text-base"
@@ -278,7 +291,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* 2. SOBRE - LAYOUT LADO A LADO EM DESKTOP */}
+      {/* 2. SOBRE */}
       <section className="py-16 md:py-24 px-6 md:px-12">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 md:gap-20 items-center">
           <div className="order-2 lg:order-1 space-y-6 md:space-y-8">
@@ -311,7 +324,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* 3. RESULTADOS - COMPACTO EM GRID */}
+      {/* 3. RESULTADOS */}
       <section className="py-16 md:py-24 px-4 md:px-12 bg-stone-900/10">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 md:mb-16">
@@ -329,11 +342,10 @@ const LandingPage = () => {
               </div>
             ))}
           </div>
-          <p className="text-center text-stone-600 text-[9px] mt-8 md:mt-12 italic uppercase tracking-widest opacity-60">Resultados individuais podem variar de acordo com o plano de tratamento.</p>
         </div>
       </section>
 
-      {/* 4. PROCESSO - LAYOUT LIMPO */}
+      {/* 4. PROCESSO */}
       <section className="py-16 md:py-24 px-6 md:px-12 max-w-5xl mx-auto">
         <div className="grid md:grid-cols-3 gap-8 md:gap-12 text-center md:text-left">
           <div className="md:col-span-1">
@@ -359,24 +371,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* 5. BASTIDORES - COMPACTO */}
-      <section className="py-16 md:py-24 px-4 md:px-12 bg-stone-900/30">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="font-serif text-3xl md:text-4xl mb-3">Momentos de Cuidado ❤️</h2>
-            <p className="text-stone-500 font-light text-sm italic max-w-md mx-auto">A ciência e o carinho em cada detalhe do atendimento.</p>
-          </div>
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-3">
-            {IMAGES.heart.map((img, i) => (
-              <div key={i} onClick={() => setZoom(img)} className="aspect-square rounded-lg overflow-hidden cursor-pointer grayscale hover:grayscale-0 transition-all duration-700">
-                <img src={img} alt={`Bastidores ${i+1}`} className="w-full h-full object-cover" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 6. CTA FINAL - IMPACTANTE */}
+      {/* 5. CTA FINAL */}
       <section className="py-24 md:py-32 px-6 md:px-12 relative overflow-hidden text-center">
         <div className="absolute inset-0 z-0">
           <img src={IMAGES.hero[4]} className="w-full h-full object-cover opacity-20" />
@@ -386,7 +381,7 @@ const LandingPage = () => {
           <h2 className="font-serif text-4xl md:text-7xl mb-6 md:mb-10 leading-tight">Sua beleza merece <br/>o melhor cuidado.</h2>
           <p className="text-lg md:text-2xl text-stone-300 mb-10 md:mb-14 font-light max-w-2xl mx-auto leading-relaxed">Garanta sua avaliação e descubra o potencial da sua beleza com a harmonização facial premium.</p>
           <a 
-            href={EXPERT_INFO.whatsappUrl} 
+            href={EXPERT_INFO.whatsappDirectUrl} 
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-4 gold-gradient text-black font-black py-5 md:py-6 px-10 md:px-14 rounded-full text-base md:text-xl shadow-2xl hover:scale-105 active:scale-95 transition-all"
@@ -396,26 +391,15 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* FOOTER - LIMPO E ORGANIZADO */}
+      {/* FOOTER */}
       <footer className="py-12 md:py-20 px-6 md:px-12 border-t border-stone-900 bg-black/50">
         <div className="max-w-6xl mx-auto text-center">
           <div className="font-serif text-3xl md:text-4xl mb-1 gold-text tracking-tighter">Dra. {EXPERT_INFO.name}</div>
           <p className="text-stone-600 text-[10px] uppercase tracking-[0.4em] mb-10">{EXPERT_INFO.profession}</p>
-          
           <div className="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-12 mb-12">
             <div className="flex items-center gap-2 text-stone-500 text-sm"><MapPin size={14} className="text-[#d4af37]"/> {EXPERT_INFO.locations}</div>
-            <a 
-              href={EXPERT_INFO.instagram} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-stone-500 text-sm hover:text-[#d4af37] transition-colors"
-            >
-              <Instagram size={14}/> @draliviafaria
-            </a>
+            <a href={EXPERT_INFO.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-stone-500 text-sm hover:text-[#d4af37] transition-colors"><Instagram size={14}/> @draliviafaria</a>
           </div>
-          
-          <div className="font-signature text-3xl md:text-4xl gold-text mb-8 opacity-40">Lívia Faria</div>
-          <div className="h-px w-20 bg-stone-900 mx-auto mb-8"></div>
           <p className="text-stone-800 text-[9px] md:text-[10px] uppercase tracking-[0.2em]">&copy; {new Date().getFullYear()} - Todos os direitos reservados</p>
         </div>
       </footer>
@@ -425,7 +409,7 @@ const LandingPage = () => {
         <div className="fixed inset-0 z-[100] bg-black/98 flex items-center justify-center p-4 backdrop-blur-xl animate-in fade-in duration-300" onClick={() => setZoom(null)}>
           <div className="relative max-w-4xl w-full">
             <img src={zoom} className="w-full h-auto max-h-[85vh] object-contain rounded-2xl shadow-2xl border border-stone-800" />
-            <button className="absolute -top-10 right-0 text-stone-500 flex items-center gap-2 font-bold hover:text-white text-xs" onClick={() => setZoom(null)}>FECHAR [X]</button>
+            <button className="absolute -top-10 right-0 text-white flex items-center gap-2 font-bold hover:text-white text-xs" onClick={() => setZoom(null)}>FECHAR [X]</button>
           </div>
         </div>
       )}
